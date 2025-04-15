@@ -12,6 +12,9 @@
     dest: "{{ kubeadm_patches_dir }}/{{ item.target }}{{ suffix }}+{{ item.type | d('strategic') }}.yaml"
     owner: "root"
     mode: "0644"
-  loop: "{{ kubeadm_patches }}"
+  loop: "{{ kubeadm_patches.files }}"
   loop_control:
     index_var: suffix
+  when:
+    - kubeadm_patches.enabled | default(false)
+    - kubeadm_patches.files is defined
